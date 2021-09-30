@@ -1,32 +1,42 @@
 <template>
   <div id="app">
         <h1>Todo application</h1>
-        <TodoList v-bind:todosSimple="todos"
-         @remove-todo = "removeTd"/> <!-- вместо v-on -->
+        <hr>
+        <router-view />
      </div>
 </template>
 
 <script>
 import TodoList from '@/components/TodoList.vue';
+import AddTodo from '@/components/AddTodo.vue';
 export default {
   name: 'App',
   data() {
     return {
      todos: [
-       {id:1, title: 'Купить хлеб', completed: false},
-       {id:2, title: 'Купить молоко', completed: false},
-       {id:3, title: 'Купить масло', completed: false}
+      //  {id:1, title: 'Купить хлеб', completed: false},
+      //  {id:2, title: 'Купить молоко', completed: false},
+      //  {id:3, title: 'Купить масло', completed: false}
      ] 
     }
+  },
+  mounted() {
+fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+  .then(response => response.json())
+  .then(json => {
+    this.todos = json
+  })
   },
     methods: {
     removeTd(id) {
       this.todos = this.todos.filter(t => t.id !== id);
-      console.log(this.todos);
+    },
+    addTodo(todo) {
+      this.todos.push(todo);
     }
   },
   components: {
-   TodoList
+   TodoList, AddTodo
   }
 }
 </script>
